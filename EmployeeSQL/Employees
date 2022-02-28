@@ -1,4 +1,32 @@
-DROP TABLE if exists "Departments";
+---------USE ONLY IF STARTING OVER---------
+DROP TABLE if exists "Departments" CASCADE;
+DROP TABLE if exists "DepartmentEmployee" CASCADE;
+DROP TABLE if exists "DepartmentManager" CASCADE;
+DROP TABLE if exists "Employees" CASCADE;
+DROP TABLE if exists "Salaries" CASCADE;
+DROP TABLE if exists "Titles" CASCADE;
+-------------------------------------------
+
+-- Assume no employee can work in more than one department
+CREATE TABLE "DepartmentEmployee" (
+    "EmployeeNo" int   NOT NULL,
+    "DepartmentNo" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_DepartmentEmployee" PRIMARY KEY (
+        "EmployeeNo", "DepartmentNo"
+     )
+);
+
+-- Assume no manager can manage more than one department
+CREATE TABLE "DepartmentManager" (
+    "DeptartmentNo" varchar(255)   NOT NULL,
+    "EmployeeNo" int   NOT NULL,
+    CONSTRAINT "pk_DepartmentManager" PRIMARY KEY (
+        "EmployeeNo", "DeptartmentNo"
+     )
+);
+
+--Why does this one have to be created 3rd and can't be created first?
+--Or is that I have to import before running all the "alter" code?
 CREATE TABLE "Departments" (
     "DepartmentNo" varchar(255)   NOT NULL,
     "DepartmentName" varchar(255)   NOT NULL,
@@ -7,28 +35,9 @@ CREATE TABLE "Departments" (
      )
 );
 
--- Assume no employee can work in more than one department
-DROP TABLE if exists "DepartmentEmployee";
-CREATE TABLE "DepartmentEmployee" (
-    "EmployeeNo" int   NOT NULL,
-    "DepartmentNo" varchar(255)   NOT NULL,
-    CONSTRAINT "pk_DepartmentEmployee" PRIMARY KEY (
-        "EmployeeNo"
-     )
-);
-
--- Assume no manager can manage more than one department
-CREATE TABLE "DepartmentManager" (
-    "DeptartmentNo" int   NOT NULL,
-    "EmployeeNo" int   NOT NULL,
-    CONSTRAINT "pk_DepartmentManager" PRIMARY KEY (
-        "EmployeeNo"
-     )
-);
-
 CREATE TABLE "Employees" (
     "EmployeeNo" int   NOT NULL,
-    "TitleID" int   NOT NULL,
+    "TitleID" varchar(255)   NOT NULL,
     "BirthDate" date   NOT NULL,
     "FirstName" varchar(255)   NOT NULL,
     "LastName" varchar(255)   NOT NULL,
@@ -72,3 +81,13 @@ REFERENCES "Titles" ("TitleID");
 
 ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_EmployeeNo" FOREIGN KEY("EmployeeNo")
 REFERENCES "Employees" ("EmployeeNo");
+
+-------------------------------------------
+---------------DATA ANALYSIS---------------
+-------------------------------------------
+
+--List the following details: employee number, last name, first name, sex, and salary.
+
+
+
+
