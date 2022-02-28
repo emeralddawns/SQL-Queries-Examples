@@ -1,94 +1,93 @@
 ---------USE ONLY IF STARTING OVER---------
-DROP TABLE if exists "Departments" CASCADE;
-DROP TABLE if exists "DepartmentEmployee" CASCADE;
-DROP TABLE if exists "DepartmentManager" CASCADE;
-DROP TABLE if exists "Employees" CASCADE;
-DROP TABLE if exists "Salaries" CASCADE;
-DROP TABLE if exists "Titles" CASCADE;
+DROP TABLE if exists "departments" CASCADE;
+DROP TABLE if exists "departmentemployee" CASCADE;
+DROP TABLE if exists "departmentmanager" CASCADE;
+DROP TABLE if exists "employees" CASCADE;
+DROP TABLE if exists "salaries" CASCADE;
+DROP TABLE if exists "titles" CASCADE;
 -------------------------------------------
 
 -- Assume no employee can work in more than one department
-CREATE TABLE "DepartmentEmployee" (
-    "EmployeeNo" int   NOT NULL,
-    "DepartmentNo" varchar(255)   NOT NULL,
-    CONSTRAINT "pk_DepartmentEmployee" PRIMARY KEY (
-        "EmployeeNo", "DepartmentNo"
+CREATE TABLE "departmentemployee" (
+    "emp_id" int   NOT NULL,
+    "dept_id" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_departmentemployee" PRIMARY KEY (
+        "emp_id","dept_id"
      )
 );
 
 -- Assume no manager can manage more than one department
-CREATE TABLE "DepartmentManager" (
-    "DeptartmentNo" varchar(255)   NOT NULL,
-    "EmployeeNo" int   NOT NULL,
-    CONSTRAINT "pk_DepartmentManager" PRIMARY KEY (
-        "EmployeeNo", "DeptartmentNo"
+CREATE TABLE "departmentmanager" (
+    "dept_id" varchar(255)   NOT NULL,
+    "emp_id" int   NOT NULL,
+    CONSTRAINT "pk_departmentmanager" PRIMARY KEY (
+        "dept_id","emp_id"
      )
 );
 
---Why does this one have to be created 3rd and can't be created first?
---Or is that I have to import before running all the "alter" code?
-CREATE TABLE "Departments" (
-    "DepartmentNo" varchar(255)   NOT NULL,
-    "DepartmentName" varchar(255)   NOT NULL,
-    CONSTRAINT "pk_Departments" PRIMARY KEY (
-        "DepartmentNo"
+--Why does this one have to be third? Or is the "alter table" the problem?
+CREATE TABLE "departments" (
+    "dept_id" varchar(255)   NOT NULL,
+    "dept_name" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_id"
      )
 );
 
-CREATE TABLE "Employees" (
-    "EmployeeNo" int   NOT NULL,
-    "TitleID" varchar(255)   NOT NULL,
-    "BirthDate" date   NOT NULL,
-    "FirstName" varchar(255)   NOT NULL,
-    "LastName" varchar(255)   NOT NULL,
-    "Sex" varchar(255)   NOT NULL,
-    "HireDate" date   NOT NULL,
-    CONSTRAINT "pk_Employees" PRIMARY KEY (
-        "EmployeeNo"
+CREATE TABLE "employees" (
+    "emp_id" int   NOT NULL,
+    "title_id" varchar(255)   NOT NULL,
+    "birth_date" date   NOT NULL,
+    "first_name" varchar(255)   NOT NULL,
+    "last_name" varchar(255)   NOT NULL,
+    "sex" varchar(255)   NOT NULL,
+    "hire_date" date   NOT NULL,
+    CONSTRAINT "pk_employees" PRIMARY KEY (
+        "emp_id"
      )
 );
 
-CREATE TABLE "Salaries" (
-    "EmployeeNo" int   NOT NULL,
-    "Salary" money   NOT NULL,
-    CONSTRAINT "pk_Salaries" PRIMARY KEY (
-        "EmployeeNo"
+CREATE TABLE "salaries" (
+    "emp_id" int   NOT NULL,
+    "salary" money   NOT NULL,
+    CONSTRAINT "pk_salaries" PRIMARY KEY (
+        "emp_id"
      )
 );
 
-CREATE TABLE "Titles" (
-    "TitleID" varchar(255)   NOT NULL,
-    "Title" varchar(255)   NOT NULL,
-    CONSTRAINT "pk_Titles" PRIMARY KEY (
-        "TitleID"
+CREATE TABLE "titles" (
+    "title_id" varchar(255)   NOT NULL,
+    "title" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_titles" PRIMARY KEY (
+        "title_id"
      )
 );
 
-ALTER TABLE "DepartmentEmployee" ADD CONSTRAINT "fk_DepartmentEmployee_EmployeeNo" FOREIGN KEY("EmployeeNo")
-REFERENCES "Employees" ("EmployeeNo");
+ALTER TABLE "departmentemployee" ADD CONSTRAINT "fk_departmentemployee_emp_id" FOREIGN KEY("emp_id")
+REFERENCES "employees" ("emp_id");
 
-ALTER TABLE "DepartmentEmployee" ADD CONSTRAINT "fk_DepartmentEmployee_DepartmentNo" FOREIGN KEY("DepartmentNo")
-REFERENCES "Departments" ("DepartmentNo");
+ALTER TABLE "departmentemployee" ADD CONSTRAINT "fk_departmentemployee_dept_id" FOREIGN KEY("dept_id")
+REFERENCES "departments" ("dept_id");
 
-ALTER TABLE "DepartmentManager" ADD CONSTRAINT "fk_DepartmentManager_DeptartmentNo" FOREIGN KEY("DeptartmentNo")
-REFERENCES "Departments" ("DepartmentNo");
+ALTER TABLE "departmentmanager" ADD CONSTRAINT "fk_departmentmanager_dept_id" FOREIGN KEY("dept_id")
+REFERENCES "departments" ("dept_id");
 
-ALTER TABLE "DepartmentManager" ADD CONSTRAINT "fk_DepartmentManager_EmployeeNo" FOREIGN KEY("EmployeeNo")
-REFERENCES "Employees" ("EmployeeNo");
+ALTER TABLE "departmentmanager" ADD CONSTRAINT "fk_departmentmanager_emp_id" FOREIGN KEY("emp_id")
+REFERENCES "employees" ("emp_id");
 
-ALTER TABLE "Employees" ADD CONSTRAINT "fk_Employees_TitleID" FOREIGN KEY("TitleID")
-REFERENCES "Titles" ("TitleID");
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_title_id" FOREIGN KEY("title_id")
+REFERENCES "titles" ("title_id");
 
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_EmployeeNo" FOREIGN KEY("EmployeeNo")
-REFERENCES "Employees" ("EmployeeNo");
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_id" FOREIGN KEY("emp_id")
+REFERENCES "employees" ("emp_id");
 
 --Confirm the tables existence
-select * from "DepartmentEmployee";
-select * from "DepartmentManager";
-select * from "Departments";
-select * from "Employees";
-select * from "Salaries";
-select * from "Titles";
+select * from "departmentemployee";
+select * from "departmentmanager";
+select * from "departments";
+select * from "employees";
+select * from "salaries";
+select * from "titles";
 
 
 -------------------------------------------
@@ -97,9 +96,15 @@ select * from "Titles";
 
 --List the following details: employee number, last name, first name, sex, and salary.
 
-select Employees.EmployeeNo, Employees.FirstName, Employees.LastName, Employees.Sex, Salaries.EmployeeNo, Salaries.Salary
-from "Employees"
-inner join "Salaries"
-on Employees.EmployeeNo = Salaries.EmployeeNo;
+select employees.emp_id, employees.first_name, employees.last_name, employees.sex, salaries.salary
+from employees
+inner join salaries
+on employees.emp_id = salaries.emp_id;
+
+--List first name, last name, and hire date for employees who were hired in 1986.
+select employees.first_name, employees.last_name, employees.hire_date
+from employees
+where date_part('year', employees.hire_date) = 1986;
+
 
 
