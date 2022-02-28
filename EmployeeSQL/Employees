@@ -1,0 +1,74 @@
+DROP TABLE if exists "Departments";
+CREATE TABLE "Departments" (
+    "DepartmentNo" varchar(255)   NOT NULL,
+    "DepartmentName" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_Departments" PRIMARY KEY (
+        "DepartmentNo"
+     )
+);
+
+-- Assume no employee can work in more than one department
+DROP TABLE if exists "DepartmentEmployee";
+CREATE TABLE "DepartmentEmployee" (
+    "EmployeeNo" int   NOT NULL,
+    "DepartmentNo" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_DepartmentEmployee" PRIMARY KEY (
+        "EmployeeNo"
+     )
+);
+
+-- Assume no manager can manage more than one department
+CREATE TABLE "DepartmentManager" (
+    "DeptartmentNo" int   NOT NULL,
+    "EmployeeNo" int   NOT NULL,
+    CONSTRAINT "pk_DepartmentManager" PRIMARY KEY (
+        "EmployeeNo"
+     )
+);
+
+CREATE TABLE "Employees" (
+    "EmployeeNo" int   NOT NULL,
+    "TitleID" int   NOT NULL,
+    "BirthDate" date   NOT NULL,
+    "FirstName" varchar(255)   NOT NULL,
+    "LastName" varchar(255)   NOT NULL,
+    "Sex" varchar(255)   NOT NULL,
+    "HireDate" date   NOT NULL,
+    CONSTRAINT "pk_Employees" PRIMARY KEY (
+        "EmployeeNo"
+     )
+);
+
+CREATE TABLE "Salaries" (
+    "EmployeeNo" int   NOT NULL,
+    "Salary" money   NOT NULL,
+    CONSTRAINT "pk_Salaries" PRIMARY KEY (
+        "EmployeeNo"
+     )
+);
+
+CREATE TABLE "Titles" (
+    "TitleID" varchar(255)   NOT NULL,
+    "Title" varchar(255)   NOT NULL,
+    CONSTRAINT "pk_Titles" PRIMARY KEY (
+        "TitleID"
+     )
+);
+
+ALTER TABLE "DepartmentEmployee" ADD CONSTRAINT "fk_DepartmentEmployee_EmployeeNo" FOREIGN KEY("EmployeeNo")
+REFERENCES "Employees" ("EmployeeNo");
+
+ALTER TABLE "DepartmentEmployee" ADD CONSTRAINT "fk_DepartmentEmployee_DepartmentNo" FOREIGN KEY("DepartmentNo")
+REFERENCES "Departments" ("DepartmentNo");
+
+ALTER TABLE "DepartmentManager" ADD CONSTRAINT "fk_DepartmentManager_DeptartmentNo" FOREIGN KEY("DeptartmentNo")
+REFERENCES "Departments" ("DepartmentNo");
+
+ALTER TABLE "DepartmentManager" ADD CONSTRAINT "fk_DepartmentManager_EmployeeNo" FOREIGN KEY("EmployeeNo")
+REFERENCES "Employees" ("EmployeeNo");
+
+ALTER TABLE "Employees" ADD CONSTRAINT "fk_Employees_TitleID" FOREIGN KEY("TitleID")
+REFERENCES "Titles" ("TitleID");
+
+ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_EmployeeNo" FOREIGN KEY("EmployeeNo")
+REFERENCES "Employees" ("EmployeeNo");
