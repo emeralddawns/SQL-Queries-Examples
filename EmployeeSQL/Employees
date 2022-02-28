@@ -82,12 +82,24 @@ REFERENCES "Titles" ("TitleID");
 ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_EmployeeNo" FOREIGN KEY("EmployeeNo")
 REFERENCES "Employees" ("EmployeeNo");
 
+--Confirm the tables existence
+select * from "DepartmentEmployee";
+select * from "DepartmentManager";
+select * from "Departments";
+select * from "Employees";
+select * from "Salaries";
+select * from "Titles";
+
+
 -------------------------------------------
 ---------------DATA ANALYSIS---------------
 -------------------------------------------
 
 --List the following details: employee number, last name, first name, sex, and salary.
 
-
+select Employees.EmployeeNo, Employees.FirstName, Employees.LastName, Employees.Sex, Salaries.EmployeeNo, Salaries.Salary
+from "Employees"
+inner join "Salaries"
+on Employees.EmployeeNo = Salaries.EmployeeNo;
 
 
