@@ -62,7 +62,7 @@ inner join departments
 inner join employees
 	on employees.emp_id = departmentemployee.emp_id
 where departments.dept_name = 'Sales';
-	
+
 -- 7) List all employees in the Sales and Development departments with the following information:
 	--employee number, last name, first name, and department name.	
 	
