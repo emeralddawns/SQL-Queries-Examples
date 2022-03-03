@@ -10,7 +10,7 @@ DROP TABLE if exists "titles" CASCADE;
 -- Assume no employee can work in more than one department
 CREATE TABLE "departmentemployee" (
     "emp_id" int   NOT NULL,
-    "dept_id" varchar(255)   NOT NULL,
+    "dept_id" varchar(4)   NOT NULL,
     CONSTRAINT "pk_departmentemployee" PRIMARY KEY (
         "emp_id","dept_id"
      )
@@ -18,16 +18,15 @@ CREATE TABLE "departmentemployee" (
 
 -- Assume no manager can manage more than one department
 CREATE TABLE "departmentmanager" (
-    "dept_id" varchar(255)   NOT NULL,
+    "dept_id" varchar(4)   NOT NULL,
     "emp_id" int   NOT NULL,
     CONSTRAINT "pk_departmentmanager" PRIMARY KEY (
         "dept_id","emp_id"
      )
 );
 
---Why does this one have to be third? Or is the "alter table" the problem?
 CREATE TABLE "departments" (
-    "dept_id" varchar(255)   NOT NULL,
+    "dept_id" varchar(4)   NOT NULL,
     "dept_name" varchar(255)   NOT NULL,
     CONSTRAINT "pk_departments" PRIMARY KEY (
         "dept_id"
@@ -36,11 +35,11 @@ CREATE TABLE "departments" (
 
 CREATE TABLE "employees" (
     "emp_id" int   NOT NULL,
-    "title_id" varchar(255)   NOT NULL,
+    "title_id" varchar(5)   NOT NULL,
     "birth_date" date   NOT NULL,
     "first_name" varchar(255)   NOT NULL,
     "last_name" varchar(255)   NOT NULL,
-    "sex" varchar(255)   NOT NULL,
+    "sex" varchar(1)   NOT NULL,
     "hire_date" date   NOT NULL,
     CONSTRAINT "pk_employees" PRIMARY KEY (
         "emp_id"
@@ -56,7 +55,7 @@ CREATE TABLE "salaries" (
 );
 
 CREATE TABLE "titles" (
-    "title_id" varchar(255)   NOT NULL,
+    "title_id" varchar(5)   NOT NULL,
     "title" varchar(255)   NOT NULL,
     CONSTRAINT "pk_titles" PRIMARY KEY (
         "title_id"
@@ -80,6 +79,8 @@ REFERENCES "titles" ("title_id");
 
 ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_id" FOREIGN KEY("emp_id")
 REFERENCES "employees" ("emp_id");
+
+
 
 --Confirm the tables existence
 select * from "departmentemployee";
