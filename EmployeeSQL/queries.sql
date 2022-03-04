@@ -30,9 +30,9 @@ where date_part('year', employees.hire_date) = 1986;
 	
 select departments.dept_id, departments.dept_name, departmentmanager.emp_id, employees.last_name, employees.first_name
 from departmentmanager
-inner join departments
+join departments
 	on departments.dept_id = departmentmanager.dept_id
-inner join employees
+join employees
 	on employees.emp_id = departmentmanager.emp_id;
 
 -- 4) List the department of each employee with the following information:
