@@ -6,7 +6,7 @@ The code creates a table schema and series of queries in pgAdmin, and performs a
 
 # What the code calculates
 
-The **table_schemata.sql** code set up the table schemata for the 6 CSV's.
+The **table_schemata.sql** code sets up the table schemata for the 6 CSV's.
 
 The **queries.sql** code displays the following:
 
