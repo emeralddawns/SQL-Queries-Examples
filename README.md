@@ -8,7 +8,7 @@ The code creates a table schema and series of queries in pgAdmin, and performs a
 
 The **table_schemata.sql** code sets up the table schemata for the 6 CSV's.
 
-The **queries.sql** code displays the following:
+The **queries.sql** code contains queries that will display the following:
 
     1. A list of the following details of each employee: employee number, last name, first name, sex, and salary.
 
